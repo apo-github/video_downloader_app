@@ -1,0 +1,7 @@
+assets/
+dist/
+build/
+ffmpeg/
+yt-dlp/
+*.ico
+*.spec
