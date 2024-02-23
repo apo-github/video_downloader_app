@@ -20,9 +20,8 @@ import os
 import subprocess #https://monologu.com/python/module/subprocess/
 # import utils
 from yt_dlp import YoutubeDL #https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#embedding-yt-dlp
-import datetime
 
-def video_download(url, video_format, audio_format, audio_only):
+def video_download(url, video_format, audio_format, audio_only, DIR_PATH):
     # debug用
     print(" ## url :", url)
     print(" ## video format :", video_format)
@@ -39,16 +38,22 @@ def video_download(url, video_format, audio_format, audio_only):
     # subprocess.run('ffmpeg -version', shell=True)
 
 
-    # フォルダ作成
-    DOWNLOAD_PATH = "Downloads"
-    dt_now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    DIR_NAME = "output_" + dt_now
-    print(DOWNLOAD_PATH)
-    DIR_PATH = Path.home() / DOWNLOAD_PATH / DIR_NAME
-    try:
-        Path(DIR_PATH).mkdir()
-    except FileExistsError as e: #既にファイルが存在する場合エラーを出力
-        print(e)
+    '''
+    # reviewerから同一フォルダにアイテムが追加される方がよいとの指摘があったため，廃止．
+    '''
+    # # 逐一フォルダ作成 
+    # DOWNLOAD_PATH = "Downloads"
+    # dt_now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    # DIR_NAME = "output_" + dt_now
+    # print(DOWNLOAD_PATH)
+    # DIR_PATH = Path.home() / DOWNLOAD_PATH / DIR_NAME
+    # try:
+    #     Path(DIR_PATH).mkdir()
+    # except FileExistsError as e: #既にファイルが存在する場合エラーを出力
+    #     print(e)
+    '''
+    ここまで
+    '''
 
 
     # youtubeダウンロード処理 https://github.com/yt-dlp/yt-dlp/tree/master?tab=readme-ov-file#video-format-options
