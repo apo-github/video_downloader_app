@@ -69,6 +69,7 @@ def video_download(url, video_format, audio_format, audio_only):
 
     ## download cmd run
     cmd = ""
+    print(audio_only)
     if audio_only == False:
         if video_format == "mp4":
             # fast (default)

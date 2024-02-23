@@ -32,7 +32,7 @@ def main(page: ft.Page):
             page.update() ### important! visible=Trueのように，状態を変更したら必ずpage.update()が必要
 
             # download run
-            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
+            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio.value) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
             end = time.time()  # 現在時刻（処理完了後）を取得
             total_time = round((end - start))
             total_time_sec = total_time % 60

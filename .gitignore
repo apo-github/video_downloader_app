@@ -3,5 +3,6 @@ dist/
 build/
 ffmpeg/
 yt-dlp/
+__pycache__/
 *.ico
 *.spec
