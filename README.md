@@ -7,18 +7,8 @@
 - yt-dlp (python library)
 
 # setting
-C:.
-├─main.py
-├─download.py
-│ 
-├─ffmpeg
-│  │  
-│  └─bin
-│          ffmpeg.exe
-│          ffplay.exe
-│          ffprobe.exe
-│        
-└─yt-dlp
+![setting](https://github.com/apo-github/youtube_downloader_app/assets/61858679/a8fa5191-53f3-4aa0-997b-e59db2a34d42)
+
 
 # How to use
 1. このリポジトリからソースコードをダウンロードし，
