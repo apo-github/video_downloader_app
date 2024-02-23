@@ -11,8 +11,8 @@ TODO
 ・DONE: 音声のみに対応できるか（フォーマットを変更するようにプログラムする）
 ・品質を変えられるか
 ・DONE: GUI対応する
-・パッケージ化する https://flet.dev/docs/guides/python/packaging-desktop-app/
-・配布する
+・DONE: パッケージ化する https://flet.dev/docs/guides/python/packaging-desktop-app/
+・DONE: 配布する
 '''
 
 from pathlib import Path #https://docs.python.org/ja/3/library/pathlib.html#correspondence-to-tools-in-the-os-module
