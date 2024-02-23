@@ -2,10 +2,24 @@ import flet as ft #https://flet.dev/docs/guides/python/getting-started
 import download
 import re
 import time
+import datetime
+from pathlib import Path
 import os # for progress bar
 
 
 def main(page: ft.Page):
+    # フォルダ作成（初期起動時のみ）
+    DOWNLOAD_PATH = "Downloads"
+    dt_now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    DIR_NAME = "output_" + dt_now
+    print(DOWNLOAD_PATH)
+    DIR_PATH = Path.home() / DOWNLOAD_PATH / DIR_NAME
+    try:
+        Path(DIR_PATH).mkdir()
+    except FileExistsError as e: #既にファイルが存在する場合エラーを出力
+        print(e)
+
+
     container_margin = 15 # px
     page.window_width = 800+container_margin  # 幅
     page.window_height = 400  # 高さ
@@ -32,7 +46,7 @@ def main(page: ft.Page):
             page.update() ### important! visible=Trueのように，状態を変更したら必ずpage.update()が必要
 
             # download run
-            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio.value) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
+            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio.value, DIR_PATH) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
             end = time.time()  # 現在時刻（処理完了後）を取得
             total_time = round((end - start))
             total_time_sec = total_time % 60
@@ -72,7 +86,21 @@ def main(page: ft.Page):
     ・icon
     '''
     video_url = ft.TextField(label="Video URL", width=600, border_radius=ft.border_radius.all(30), border_width=2)
-    download_btn = ft.ElevatedButton(text="Download", icon=ft.icons.DOWNLOAD_ROUNDED, height=50, bgcolor=ft.colors.BLUE_400, color=ft.colors.WHITE, on_click=download_button_clicked)
+    download_btn = ft.ElevatedButton(text="Download", icon=ft.icons.DOWNLOAD_ROUNDED, height=50, 
+        style=ft.ButtonStyle(
+            color={
+                ft.MaterialState.HOVERED: ft.colors.WHITE, 
+                ft.MaterialState.FOCUSED: ft.colors.WHITE,
+                ft.MaterialState.DEFAULT: ft.colors.WHITE,
+            }, 
+            bgcolor={
+                ft.MaterialState.HOVERED: ft.colors.BLUE_600,
+                ft.MaterialState.FOCUSED: ft.colors.BLUE_400, 
+                ft.MaterialState.DEFAULT: ft.colors.BLUE_400,
+            }),
+            on_click=download_button_clicked
+        ) #Buttonホバー時の色変化が分かりにくかったため，ホバー時の色を濃くなるように調整した．
+    # download_btn = ft.ElevatedButton(text="Download", icon=ft.icons.DOWNLOAD_ROUNDED, height=50, bgcolor=ft.colors.BLUE_400, color=ft.colors.WHITE, on_click=download_button_clicked)
     check_box_audio = ft.Checkbox(label="Audio only", value=False, fill_color=ft.colors.WHITE, check_color=ft.colors.BLUE_400) # default => false
     audio_icon = ft.Icon(name=ft.icons.AUDIOTRACK_ROUNDED, color=ft.colors.BLUE_400, size=20) # icon https://gallery.flet.dev/icons-browser/
 
