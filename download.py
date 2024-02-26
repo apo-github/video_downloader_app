@@ -27,6 +27,7 @@ def video_download(url, video_format, audio_format, audio_only, DIR_PATH):
     print(" ## video format :", video_format)
     print(" ## audio format :", audio_format)
     print(" ## is audio only :", audio_only)
+    print(" ## DIR_PATH :", DIR_PATH)
 
     #環境変数の設定 https://zenn.dev/shiro_toy_box/articles/1a65c8a901e854
     FFMPEG_PATH = Path.cwd() / "ffmpeg" / "bin"  #ffmpegのパスを取得
@@ -74,7 +75,6 @@ def video_download(url, video_format, audio_format, audio_only, DIR_PATH):
 
     ## download cmd run
     cmd = ""
-    print(audio_only)
     if audio_only == False:
         if video_format == "mp4":
             # fast (default)

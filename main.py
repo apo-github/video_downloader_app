@@ -6,25 +6,31 @@ import datetime
 from pathlib import Path
 import os # for progress bar
 
+class Info:
+    def __init__(self):
+        self.DIR_PATH = "" 
+
+        # フォルダ作成（初期起動時のみ）
+        DOWNLOAD_PATH = "Downloads"
+        dt_now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        DIR_NAME = "output_" + dt_now
+        print(DOWNLOAD_PATH)
+        self.DIR_PATH = Path.home() / DOWNLOAD_PATH / DIR_NAME
+        try:
+            Path(self.DIR_PATH).mkdir()
+        except FileExistsError as e: #既にファイルが存在する場合エラーを出力
+            print(e)
+        
 
 def main(page: ft.Page):
-    # フォルダ作成（初期起動時のみ）
-    DOWNLOAD_PATH = "Downloads"
-    dt_now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    DIR_NAME = "output_" + dt_now
-    print(DOWNLOAD_PATH)
-    DIR_PATH = Path.home() / DOWNLOAD_PATH / DIR_NAME
-    try:
-        Path(DIR_PATH).mkdir()
-    except FileExistsError as e: #既にファイルが存在する場合エラーを出力
-        print(e)
-
+    info = Info()
 
     container_margin = 15 # px
     page.window_width = 800+container_margin  # 幅
     page.window_height = 400  # 高さ
     page.window_resizable = True  # ウィンドウサイズ変更可否
     page.window_center()
+
 
     #　Download button 処理
     def download_button_clicked(e):
@@ -46,7 +52,7 @@ def main(page: ft.Page):
             page.update() ### important! visible=Trueのように，状態を変更したら必ずpage.update()が必要
 
             # download run
-            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio.value, DIR_PATH) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
+            result_code, stdout, stderr = download.video_download(video_url.value, dropdown_video.value, dropdown_audio.value, check_box_audio.value, info.DIR_PATH) #stdout: 標準出力および簡単なエラー内容，stderr：エラー詳細
             end = time.time()  # 現在時刻（処理完了後）を取得
             total_time = round((end - start))
             total_time_sec = total_time % 60
@@ -69,14 +75,25 @@ def main(page: ft.Page):
             
             # setting を改める
             download_btn.disabled = False #ボタンを有効化
-            video_url.value = "" #テキストエリアを空に
             progress_bar_section.visible = False # プログレスバーを非表示にする
+            video_url.value = "" #テキストエリアを空に
             page.update()
     
     def info_link(e):
         pass
         # page.launch_url('https://github.com/apo-github')
 
+    # File picker
+    def get_directory_result(e: ft.FilePickerResultEvent):
+        if e.path is None:
+            pass
+        else:
+            info.DIR_PATH = e.path
+        print(info.DIR_PATH)
+    
+    # add file picker　https://flet.dev/docs/controls/filepicker/
+    get_directory_dialog = ft.FilePicker(on_result=get_directory_result)
+    page.overlay.append(get_directory_dialog)
 
     # controls
     '''
@@ -103,13 +120,14 @@ def main(page: ft.Page):
     # download_btn = ft.ElevatedButton(text="Download", icon=ft.icons.DOWNLOAD_ROUNDED, height=50, bgcolor=ft.colors.BLUE_400, color=ft.colors.WHITE, on_click=download_button_clicked)
     check_box_audio = ft.Checkbox(label="Audio only", value=False, fill_color=ft.colors.WHITE, check_color=ft.colors.BLUE_400) # default => false
     audio_icon = ft.Icon(name=ft.icons.AUDIOTRACK_ROUNDED, color=ft.colors.BLUE_400, size=20) # icon https://gallery.flet.dev/icons-browser/
+    save_location_button = ft.ElevatedButton(text="Save location", style=ft.ButtonStyle(color=ft.colors.GREY_600), on_click=lambda _: get_directory_dialog.get_directory_path())
 
     '''
     ・alert dialog
     '''
     def close_dlg(e): ## close dialog
-            dlg_modal.open = False
-            page.update()
+        dlg_modal.open = False
+        page.update()
 
     def open_dlg_modal(e, title, log, title_color):
         page.dialog = dlg_modal
@@ -123,8 +141,9 @@ def main(page: ft.Page):
         actions=[
             ft.TextButton("Close", on_click=close_dlg),
         ],
-        actions_alignment=ft.MainAxisAlignment.END
+        actions_alignment=ft.MainAxisAlignment.END,
     )
+    page.update() #ここで更新をしないと，なぜかたまにダイアログが閉じない
 
     '''
     progress bar
@@ -193,6 +212,7 @@ def main(page: ft.Page):
     
 
     # put some controls together
+
     textfiled_section = ft.Row(
         controls=[
             video_url,
@@ -200,11 +220,22 @@ def main(page: ft.Page):
         ],
     )
 
-    check_box_audio_section = ft.Row(
+
+    check_box_audio_section = ft.Row( # bind download button & checkbox
         controls=[
             check_box_audio,
             audio_icon,
-        ]
+        ],
+    )
+
+    audio_row_section = ft.Row( # bind check box and audio section & file picker
+        controls=[
+            check_box_audio_section,
+            ft.Container(
+                    save_location_button,
+                    padding=ft.padding.only(right=5), #file pickerを右に寄せる
+            ),
+        ],alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
     )
 
     dropdown_section = ft.Row(
@@ -225,9 +256,10 @@ def main(page: ft.Page):
             content=ft.Column(
                 controls=[
                     textfiled_section,
-                    check_box_audio_section,
+                    # check_box_audio_section,
+                    audio_row_section,
                     # dropdown_section,
-                    progress_bar_section
+                    progress_bar_section,
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER, #progress bar中央寄せ
             ),margin=container_margin,
