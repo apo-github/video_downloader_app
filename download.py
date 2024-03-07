@@ -1,4 +1,4 @@
-"""youtubeの再生リストを一括ダウンロードするプログラム
+"""URLから動画を一括ダウンロードするプログラム
 
 ・動画取得にyt-dlpを使用: https://github.com/yt-dlp/yt-dlp/blob/master/LICENSE
 ・FFmpegを動的リンクとして使用: https://github.com/FFmpeg/FFmpeg
@@ -57,13 +57,13 @@ def video_download(url, video_format, audio_format, audio_only, DIR_PATH):
     '''
 
 
-    # youtubeダウンロード処理 https://github.com/yt-dlp/yt-dlp/tree/master?tab=readme-ov-file#video-format-options
+    # ダウンロード処理 https://github.com/yt-dlp/yt-dlp/tree/master?tab=readme-ov-file#video-format-options
     '''
     format options: https://github.com/yt-dlp/yt-dlp/tree/master?tab=readme-ov-file#post-processing-options
     (default) 3gp, aac, flv, m4a, mp3, mp4, ogg, wav, webm are supported
     '''
     ## test用
-    # url = "https://www.youtube.com/watch?v=iMVChD17bIM&list=PLDJfzGjtVLHkgc_MbRNtFUeW_Fb1oAtqg"
+    # url = ""
     # video_format = "mp4" #--remux-video {video_format} #avi, flv, gif, mkv, mov, mp4, webm, aac, aiff, alac,flac, m4a, mka, mp3, ogg, opus, vorbis, wav are supported 
     # audio_format = "mp3" # aac, alac, flac, m4a, mp3, opus, vorbis, wav are supported
 

@@ -1,0 +1,17 @@
+
+About
+    このソフトウエアはURLから動画をダウンロードするためのソフトウエアです。
+
+
+licenses
+    ・このソフトウエアのライセンスは，GNU Lesser General Public License, version 2.1です。
+        source code：https://github.com/apo-github/youtube_downloader_app
+        LGPLv2.1 ：https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+    ・このソフトウェアは LGPLv2.1 に基づく，FFmpeg プロジェクトのライブラリを静的リンクとして使用しています．
+        FFmpeg：https://www.ffmpeg.org/
+        LGPLv2.1 ：https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
+
+    ・このソフトウエアは Unlicenseに基づく，yt-dlpプロジェクトのライブラリを静的リンクとして使用しています。
+        yt-dlp: https://github.com/yt-dlp/yt-dlp
+        license: https://github.com/yt-dlp/yt-dlp/blob/master/LICENSE

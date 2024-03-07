@@ -1,5 +1,5 @@
-# youtube_downloader_app
-- URLから，動画やプレイリストを一括でダウンロードするアプリケーションです．
+# video_downloader_app
+- URLから動画をダウンロードするアプリケーションです．
 - 音声のみのダウンロードにも対応しています．
 
 # requirements
@@ -7,7 +7,7 @@
 - yt-dlp (https://github.com/yt-dlp/yt-dlp/releases)
 
 # setting
-![setting](https://github.com/apo-github/youtube_downloader_app/assets/61858679/7f7631ba-2c88-4645-bf97-5051f76118d9)
+![setting](https://github.com/apo-github/video_downloader_app/assets/61858679/5b84cb20-6871-4d30-b124-d37c7094e398)
 
 
 # How to use
